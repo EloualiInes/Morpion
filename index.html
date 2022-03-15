@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./public/index.css">
+        <title>Morpion</title>
+    </head>
+    <body>
+        <div class="container_principal">
+            <div class="container_titre">
+                <h1>Morpion</h1>
+                <div class="trait"></div>
+            </div>
+            
+
+            <div class="container_regle">
+                <h2>Comment jouer au Morpion ?</h2>
+                <p>
+                    Le but du jeu est d’aligner avant son adversaire 3 symboles identiques
+                    horizontalement, verticalement ou en diagonale. <br/>
+                    Chaque joueur a donc son propre symbole, l'un une croix et l'autre un rond. La partie se termine lorsque l’un des joueurs a aligné 3 symboles ou
+                    lorsque la grille est completée sans vainqueur. Il y a alors égalité.
+                </p>
+            </div>
+
+            <div class="containerFormulaire">
+                <p>Saissisez vos noms, puis cliquez sur "ok"</p>
+                <form action="" id="formulaireNoms">
+                    <input type="text" id= "j1" placeholder="Nom du joueur 1">
+                    <input type="text" id= "j2" placeholder="Nom du joueur 2">
+                    <input type="submit" value="OK">
+                </form>
+            </div>
+            
+            <div class="container_jeu">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+        
+    <script src="./public/main.js"></script>
+    </body>
+    </html>

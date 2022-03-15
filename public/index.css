@@ -1,0 +1,103 @@
+:root{
+    --mainColor:#232020;
+    --gris:#B0A0A0;
+}
+*{
+    box-sizing: border-box;
+}
+
+html,body{
+    margin: 0;
+    padding: 0;
+    color:white;
+    background-color: #232020;
+}
+
+body{
+    margin-left: 16px;
+    margin-right: 16px;
+}
+/* Container titre */
+.container_titre{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 16px;
+}
+
+.trait{
+    width: 100px;
+    height: 2px;
+    background-color: var(--gris);
+    text-align: center;
+}
+
+/* Container regle du jeu */
+
+.container_regle > p{
+    width: 700px;
+}
+/*  Jeu */
+
+/* Formulaire joueur */
+.containerFormulaire{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerFormulaire > p{
+    font-size: 1.5em;
+    font-weight: 600;
+}
+#formulaireNoms{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#formulaireNoms > input[type=text]{
+    border-radius: 20px;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 5px 2px 2px black;
+}
+
+#formulaireNoms > input[type=text]::placeholder{
+    text-align: center;
+}
+
+#formulaireNoms > input[type=submit]{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #704444;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px black;
+}
+
+/* Morpion */
+.container_jeu{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+table{
+    border-collapse: collapse;
+    margin: 16px;
+}
+td, tr{
+    border: 3px solid white;
+    height: 100px;
+    width: 100px;
+}
