@@ -9,13 +9,19 @@
 html,body{
     margin: 0;
     padding: 0;
-    color:white;
+    color:black;
     background-color: #232020;
+    font-size: 1.15em;
 }
 
-body{
-    margin-left: 16px;
-    margin-right: 16px;
+
+
+.container_principal{
+    background: white;
+    margin-left: 20%;
+    margin-right: 20%;
+    height: 100vh;
+    
 }
 /* Container titre */
 .container_titre{
@@ -23,30 +29,42 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #704444;
+    color: white;
+    padding: 10px;
+    
 }
 
 h1{
     text-align: center;
     font-size: 3em;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+    margin: 0;
+    
 }
 
 .trait{
     width: 100px;
-    height: 2px;
-    background-color: var(--gris);
+    height: 3px;
+    background-color: #704444;
     text-align: center;
 }
 
 /* Container regle du jeu */
-
-.container_regle > p{
-    width: 700px;
+.container_regle{
+    padding: 10px;
 }
+h2{
+    font-size: 2em;
+    margin-bottom: 20px;
+    
+}
+
 /*  Jeu */
 
 /* Formulaire joueur */
 .containerFormulaire{
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,6 +98,7 @@ h1{
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    color: white;
     background-color: #704444;
     border: 1px solid black;
     box-shadow: 2px 2px 2px black;
@@ -91,13 +110,85 @@ h1{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 16px;
 }
 table{
     border-collapse: collapse;
     margin: 16px;
 }
-td, tr{
-    border: 3px solid white;
-    height: 100px;
-    width: 100px;
+tr,td{
+    border: 3px solid #704444;
+    height: 120px;
+    width: 120px;
+}
+
+
+td{
+    text-align: center;
+    /* height: 120px;
+    width: 60px; */
+}
+
+.instructions{
+    background-color: #704444;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.1em;
+}
+
+strong{
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 5px;
+    background-color: #704444;
+    color: white;
+    text-align: center;
+}
+
+/*  MEDIA */
+
+@media screen and (max-width:1024px){
+    .container_principal{
+        margin-left: 0;
+        margin-right: 0;
+        height: 100vh;
+    }
+
+    footer{
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .containerFormulaire{
+        margin-bottom: 16px;
+    }
+}
+
+
+
+@media screen and (max-width: 450px) {
+    html,body{
+        background-color: white;
+    }
+    tr,td{
+        border: 3px solid #704444;
+        height: 80px;
+        width: 80px;
+    }
+
+    .container_principal{
+        height: auto;
+    }
 }
