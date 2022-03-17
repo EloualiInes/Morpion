@@ -115,8 +115,31 @@ function horizontal(x,y){
     }
     return alignement;
 }
+
+function vertical(x,y){
+    let newX = x;
+    let alignement = 1;
+    for(let i = 1; i < LENGTHTAB; i++){
+        // Pion posé au centre de la ligne
+        if(x != 1){
+            newX = (x + i < LENGTHTAB)?x+i:x-i;
+        }
+        // Pion posé au extrémités
+        else{
+            newX = (newX + i < LENGTHTAB)?newX+i:newX-i;
+        }
+        // Si le pion posé et le pion à coté sont egaux incrémente l'alignement
+        if(EtatJeu[x][y] == EtatJeu[newX][y]){
+            alignement++;
+        }
+        else{
+            break;
+        }
+    }
+    return alignement;
+}
 function verifWin(x,y){
-    if(horizontal(x,y) == 3){
+    if(horizontal(x,y) == 3 || vertical(x,y) == 3){
         return true;
     }
     return false;
