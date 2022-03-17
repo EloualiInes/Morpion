@@ -1,18 +1,18 @@
-// Element du dom
+//-------------- Element du dom
 let inputJ1 = document.querySelector("#j1");
 let inputJ2 = document.querySelector("#j2");
 let inputs = [inputJ1, inputJ2];
 let formulaire = document.querySelector("#formulaireNoms");
 let containerFormulaire = document.querySelector(".containerFormulaire");
 let container_jeu = document.querySelector(".container_jeu");
-let table = document.querySelector(".container_jeu");
 let cases = document.querySelectorAll("td");
+let modal = document.querySelector(".modal");
 
 
-// Etat par défaut 
+// -------------- Etat par défaut 
 container_jeu.style.display = "none";
 
-// Variables
+//  ----------------- Variables
 
 let tour;
 let joueur1 = {
@@ -26,10 +26,10 @@ let joueur2 = {
     pion:"rond",
     adressePion : "./public/pictures/rond.png"
 };
-let LENGTHTAB = 3;
+const LENGTHTAB = 3;
 let EtatJeu = new Array(LENGTHTAB);
 
-// Fonctions
+// ------------------------ Fonctions
 
 function playerStart(){
     return (Math.floor(Math.random()*2) == 0?joueur1:joueur2);
@@ -55,16 +55,39 @@ function initEtatJeu(){
     for(let i = 0; i < EtatJeu.length; i++){
         EtatJeu[i] = new Array(3);
     }
+
+    for (let x = 0; x < EtatJeu.length; x++) {
+        for(let y = 0; y < EtatJeu.length; y++){
+            EtatJeu[x][y] = null;
+        }
+    }
+}
+
+function posX(pos){
+    return (pos!= 0)?~~(pos/LENGTHTAB):0;;
+}
+
+function posY(pos){
+    return (pos!= 0)?pos%LENGTHTAB:0;
 }
 
 function ajoutEtatJeu(pos, obj){
     
-    let x = (pos!= 0)?~~(pos/LENGTHTAB):0;
-    let y = (pos!= 0)?pos%LENGTHTAB:0;
+    let x = posX(pos);
+    let y = posY(pos);
     EtatJeu[x][y] = obj;
+    // A modif 
     if(verifWin(x,y) || morpionRempli()){
-        console.log("gagné or morpion rempli");
-        // OUVERTURE pop pour le gain
+        let title = document.createElement("h2");
+        title.innerText = "Gagnée ou morpion rempli";
+        modal.prepend(title);
+        modal.style.top = "300px";
+        document.querySelector("button").addEventListener("click", () =>{
+            console.log("entre");
+            modal.style.top = "-300px";
+            initgame();
+            console.log(cases);
+        });
     }
     
 }
@@ -108,45 +131,84 @@ function morpionRempli(){
     }
     return true;
 }
-// Event
-for(let i = 0; i < cases.length; i++){
-    cases[i].addEventListener("click",() => {
-        cases[i].innerHTML = "<img src=\" " + tour.adressePion + "\">";
-        ajoutEtatJeu(i,tour);
+// ----------------------------------------- Event
 
-        chgtour();
+function addEventCasePion(){
+    for(let i = 0; i < cases.length; i++){
+        cases[i].addEventListener("click",() => {
+            console.log("oui ...");
+            let x = posX(i);
+            let y = posY(i);
+            if(EtatJeu[x][y] == null){
+                console.log("dans le if");
+                cases[i].innerHTML = "<img src=\" " + tour.adressePion + "\">";
+                ajoutEtatJeu(i,tour);
+                chgtour();
+                this.removeEventListener("click",arguments.callee);
+            }
+            else{
+                console.log("dans le else");
+                document.querySelector(".instructions").innerHTML = "Posez votre piece dans un emplacement vide, "+tour.nom;
+            }
+            
+        });
+    }
+}
+
+function initGrillePion(){
+    for(let i = 0; i < cases.length; i++){
+        if(cases[i].firstChild){
+            cases[i].innerHTML = "";
+        }
+        
+    }
+}
+
+
+
+function startGame(){
+    formulaire.addEventListener("submit", (event) =>{
+        event.preventDefault();
+    
+        if(inputJ1.value == "" && inputJ2.value == ""){
+            styleInputEmpty(inputJ1,"red");
+            styleInputEmpty(inputJ2,"red");
+        }
+    
+        else if(inputJ1.value == "")
+            styleInputEmpty(inputJ1,"red");
+        
+        else if(inputJ2.value == "")
+            styleInputEmpty(inputJ2,"red");
+        
+        else{
+            //Gestion formulaire
+            styleInputEmpty(inputJ1,"silver");
+            styleInputEmpty(inputJ2,"silver");
+            joueur1.nom = inputJ1.value;
+            joueur2.nom = inputJ2.value;
+            initgame();
+            addEventCasePion();
+
+            
+        }
+        
     });
 }
 
-formulaire.addEventListener("submit", (event) =>{
-    event.preventDefault();
+function initgame(){
+    containerFormulaire.style.display = "none";
+    initEtatJeu();
+    initGrillePion();
+    tour = playerStart();
+    let p = document.querySelector(".instructions");
+    p.innerHTML = "<strong>" + tour.nom + "</strong> commence...";
+    container_jeu.prepend(p);
+    container_jeu.style.display = "flex";
+}
 
-    if(inputJ1.value == "" && inputJ2.value == ""){
-        styleInputEmpty(inputJ1,"red");
-        styleInputEmpty(inputJ2,"red");
-    }
+// MAIN
+startGame();
 
-    else if(inputJ1.value == "")
-        styleInputEmpty(inputJ1,"red");
-    
-    else if(inputJ2.value == "")
-        styleInputEmpty(inputJ2,"red");
-    
-    else{
-        styleInputEmpty(inputJ1,"silver");
-        styleInputEmpty(inputJ2,"silver");
-        joueur1.nom = inputJ1.value;
-        joueur2.nom = inputJ2.value;
-        containerFormulaire.style.display = "none";
-        let p = document.createElement("p");
-        p.classList.add("instructions");
-        initEtatJeu();
-        tour = playerStart();
-        console.log(joueur1);
-        p.innerHTML = "<strong>" + tour.nom + "</strong> commence...";
-        container_jeu.prepend(p);
-        container_jeu.style.display = "flex";
-    }
-    
-});
+
 

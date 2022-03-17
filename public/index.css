@@ -157,6 +157,25 @@ footer{
     text-align: center;
 }
 
+.modal,.error{
+    position: absolute;
+    background-color: aqua;
+    height: 300px;
+    width: 30%;
+    top:-300px;
+    left: 35%;
+}
+
+/* .error{
+    position: absolute;
+    background-color: red;
+    color: white;
+    height: 300px;
+    width: 30%;
+    top:-300px;
+    left: -35%;
+} */
+
 /*  MEDIA */
 
 @media screen and (max-width:1024px){
