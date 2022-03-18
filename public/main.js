@@ -83,21 +83,34 @@ function ajoutEtatJeu(pos, obj){
     let x = posX(pos);
     let y = posY(pos);
     EtatJeu[x][y] = obj;
-    // A modif 
-    if(verifWin(x,y) || morpionRempli()){
+    let gameWin = verifWin(x,y);
+    if(gameWin || morpionRempli()){
         if(modal.childElementCount == 0){
             let title = document.createElement("h2");
-            let button = document.createElement("button")
-            title.innerText = "Gagnée ou morpion rempli";
+            let button = document.createElement("button");
+            title.classList.add("EndGame");
+           
             button.innerText = "Rejouer";
             modal.append(title);
             modal.append(button);
-            
         }
+       
         modal.style.top = "300px";
-        document.querySelector("button").addEventListener("click", () =>{
+        let rejouer = document.querySelector("button");
+        let title = document.querySelector(".EndGame");
+        if(gameWin){
+            title.innerHTML = "Bravo !! <br/>" + obj.nom + " a gagné ! ";
+            title.classList.add("win");
+        }
+        else{
+            title.innerHTML = "Egalité !!";
+            title.classList.add("equal");
+        }
+        rejouer.addEventListener("click", () =>{
             console.log("entre");
             modal.style.top = "-300px";
+            title.classList.remove("win");
+            title.classList.remove("equal");
             initgame();
             console.log(cases);
         });
@@ -164,15 +177,36 @@ function diagonal(x,y){
     newY = y;
     while(EtatJeu[x][y] == EtatJeu[newX][newY] && alignement < 3){
         alignement++;
+        console.log("alignement : " + alignement);
         if(newX == newY){
             if(newX == 1){
-                if(EtatJeu[newX][newY] == EtatJeu[newX-1][newY+1]){
+                
+                if((EtatJeu[x][y] === EtatJeu[newX-1][newY-1] && y != newY-1)|| (x == 1 && y==1)){
                     newX--;
-                    newY++;
+                    newY--;
+                    console.log("newX = " + newX + "newY = " + newY);
                 }
-                else{
+                else if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1] && y != newY+1){
                    newX--;
-                   newY--;
+                   newY++;
+                   console.log("ds le else if");
+                }
+                // else if(x == 1 && y == 1){
+                //     if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1]){
+                //         newX--;
+                //         newY++;
+                //     }
+                //     else if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1]){
+                //         newX--;
+                //         newY--;
+                //     }
+                //     else{
+                //         break;
+                //     }
+                // }
+                else{
+                    console.log("ds le else");
+                    break;
                 }
             }
             else if(newX == 0){
@@ -206,6 +240,20 @@ function verifWin(x,y){
         return true;
     }
     return false;
+
+    // if(horizontal(x,y) == 3){
+    //     console.log("horizontal");
+    //     return true;
+    // }
+    // else if(vertical(x,y) == 3){
+    //     console.log("vertical");
+    //     return true;
+    // }
+    // else if(diagonal(x,y) ==3){
+    //     console.log("diagonal");
+    //     return true;
+    // }
+    return false
 }
 
 function morpionRempli(){

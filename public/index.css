@@ -157,24 +157,28 @@ footer{
     text-align: center;
 }
 
-.modal,.error{
+.modal{
     position: absolute;
-    background-color: aqua;
     height: 300px;
     width: 30%;
     top:-300px;
     left: 35%;
+    background-color: white;
+    border: 2px solid black;
+    box-shadow: 2px 5px 2px black;
+}
+.EndGame{
+    color: white;
+    margin: 0;
+}
+.win{
+    background-color: green;
 }
 
-/* .error{
-    position: absolute;
-    background-color: red;
-    color: white;
-    height: 300px;
-    width: 30%;
-    top:-300px;
-    left: -35%;
-} */
+.equal{
+    background-color: orange;
+}
+
 
 /*  MEDIA */
 
