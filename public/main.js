@@ -63,6 +63,13 @@ function initEtatJeu(){
     }
 }
 
+function initGrillePion(){
+    for(let i = 0; i < cases.length; i++){
+        if(cases[i].firstChild)
+            cases[i].innerHTML = "";
+    }
+}
+
 function posX(pos){
     return (pos!= 0)?~~(pos/LENGTHTAB):0;;
 }
@@ -78,9 +85,15 @@ function ajoutEtatJeu(pos, obj){
     EtatJeu[x][y] = obj;
     // A modif 
     if(verifWin(x,y) || morpionRempli()){
-        let title = document.createElement("h2");
-        title.innerText = "Gagnée ou morpion rempli";
-        modal.prepend(title);
+        if(modal.childElementCount == 0){
+            let title = document.createElement("h2");
+            let button = document.createElement("button")
+            title.innerText = "Gagnée ou morpion rempli";
+            button.innerText = "Rejouer";
+            modal.append(title);
+            modal.append(button);
+            
+        }
         modal.style.top = "300px";
         document.querySelector("button").addEventListener("click", () =>{
             console.log("entre");
@@ -138,8 +151,58 @@ function vertical(x,y){
     }
     return alignement;
 }
+
+function diagonal(x,y){
+    let alignement = 0;
+    let newX;
+    let newY;
+    if(x != y && !((x == 2 && y == 0) || (x == 0 && y == 2))){
+        return alignement;
+    }
+
+    newX = x;
+    newY = y;
+    while(EtatJeu[x][y] == EtatJeu[newX][newY] && alignement < 3){
+        alignement++;
+        if(newX == newY){
+            if(newX == 1){
+                if(EtatJeu[newX][newY] == EtatJeu[newX-1][newY+1]){
+                    newX--;
+                    newY++;
+                }
+                else{
+                   newX--;
+                   newY--;
+                }
+            }
+            else if(newX == 0){
+                newX = 2;
+                newY = 2;
+            }
+            else{
+                newX--;
+                newY--;
+            }
+        }
+        else if(newX == 0 && newY == 2){
+            newX = 2;
+            newY = 0;
+        }
+        else{
+            newX--;
+            newY++;
+        }
+        
+    }  
+    return alignement;
+    
+}
+
+
+    
+
 function verifWin(x,y){
-    if(horizontal(x,y) == 3 || vertical(x,y) == 3){
+    if(horizontal(x,y) == 3 || vertical(x,y) == 3 || diagonal(x,y) ==3){
         return true;
     }
     return false;
@@ -159,18 +222,15 @@ function morpionRempli(){
 function addEventCasePion(){
     for(let i = 0; i < cases.length; i++){
         cases[i].addEventListener("click",() => {
-            console.log("oui ...");
             let x = posX(i);
             let y = posY(i);
             if(EtatJeu[x][y] == null){
-                console.log("dans le if");
                 cases[i].innerHTML = "<img src=\" " + tour.adressePion + "\">";
                 ajoutEtatJeu(i,tour);
                 chgtour();
                 this.removeEventListener("click",arguments.callee);
             }
             else{
-                console.log("dans le else");
                 document.querySelector(".instructions").innerHTML = "Posez votre piece dans un emplacement vide, "+tour.nom;
             }
             
@@ -178,14 +238,7 @@ function addEventCasePion(){
     }
 }
 
-function initGrillePion(){
-    for(let i = 0; i < cases.length; i++){
-        if(cases[i].firstChild){
-            cases[i].innerHTML = "";
-        }
-        
-    }
-}
+
 
 
 
@@ -212,8 +265,6 @@ function startGame(){
             joueur2.nom = inputJ2.value;
             initgame();
             addEventCasePion();
-
-            
         }
         
     });
