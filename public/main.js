@@ -6,11 +6,10 @@ let formulaire = document.querySelector("#formulaireNoms");
 let containerFormulaire = document.querySelector(".containerFormulaire");
 let container_jeu = document.querySelector(".container_jeu");
 let cases = document.querySelectorAll("td");
+let divEndGame = document.querySelector(".divEndGame");
 let modal = document.querySelector(".modal");
 
 
-// -------------- Etat par défaut 
-container_jeu.style.display = "none";
 
 //  ----------------- Variables
 
@@ -85,19 +84,31 @@ function ajoutEtatJeu(pos, obj){
     EtatJeu[x][y] = obj;
     let gameWin = verifWin(x,y);
     if(gameWin || morpionRempli()){
-        if(modal.childElementCount == 0){
+        if(divEndGame.childElementCount == 0){
             let title = document.createElement("h2");
-            let button = document.createElement("button");
-            title.classList.add("EndGame");
-           
-            button.innerText = "Rejouer";
-            modal.append(title);
-            modal.append(button);
+            let btnReplay = document.createElement("button");
+            let btnRetour = document.createElement("button");
+            title.classList.add("titleEndGame");
+            btnReplay.classList.add("replay");
+            btnRetour.classList.add("back");
+            btnReplay.innerText = "Rejouer";
+            btnRetour.innerText = "Retour";
+            divEndGame.append(title);
+            divEndGame.append(btnReplay);
+            divEndGame.append(btnRetour);
+            
         }
        
-        modal.style.top = "300px";
-        let rejouer = document.querySelector("button");
-        let title = document.querySelector(".EndGame");
+        //modal.style.top = "300px";
+        
+        let rejouer = document.querySelector(".replay");
+        let title = document.querySelector(".titleEndGame");
+        let back = document.querySelector(".back");
+        setTimeout(() => {
+            container_jeu.style.display = "none";
+            divEndGame.style.display = "flex";
+        },250);
+        
         if(gameWin){
             title.innerHTML = "Bravo !! <br/>" + obj.nom + " a gagné ! ";
             title.classList.add("win");
@@ -106,14 +117,16 @@ function ajoutEtatJeu(pos, obj){
             title.innerHTML = "Egalité !!";
             title.classList.add("equal");
         }
+        
         rejouer.addEventListener("click", () =>{
-            console.log("entre");
-            modal.style.top = "-300px";
             title.classList.remove("win");
             title.classList.remove("equal");
             initgame();
-            console.log(cases);
         });
+        back.addEventListener("click", () =>{
+            location.reload();
+         });
+
     }
     
 }
@@ -177,35 +190,19 @@ function diagonal(x,y){
     newY = y;
     while(EtatJeu[x][y] == EtatJeu[newX][newY] && alignement < 3){
         alignement++;
-        console.log("alignement : " + alignement);
         if(newX == newY){
             if(newX == 1){
                 
                 if((EtatJeu[x][y] === EtatJeu[newX-1][newY-1] && y != newY-1)|| (x == 1 && y==1)){
                     newX--;
                     newY--;
-                    console.log("newX = " + newX + "newY = " + newY);
                 }
                 else if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1] && y != newY+1){
                    newX--;
                    newY++;
-                   console.log("ds le else if");
                 }
-                // else if(x == 1 && y == 1){
-                //     if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1]){
-                //         newX--;
-                //         newY++;
-                //     }
-                //     else if(EtatJeu[x][y] === EtatJeu[newX-1][newY+1]){
-                //         newX--;
-                //         newY--;
-                //     }
-                //     else{
-                //         break;
-                //     }
-                // }
+
                 else{
-                    console.log("ds le else");
                     break;
                 }
             }
@@ -239,20 +236,6 @@ function verifWin(x,y){
     if(horizontal(x,y) == 3 || vertical(x,y) == 3 || diagonal(x,y) ==3){
         return true;
     }
-    return false;
-
-    // if(horizontal(x,y) == 3){
-    //     console.log("horizontal");
-    //     return true;
-    // }
-    // else if(vertical(x,y) == 3){
-    //     console.log("vertical");
-    //     return true;
-    // }
-    // else if(diagonal(x,y) ==3){
-    //     console.log("diagonal");
-    //     return true;
-    // }
     return false
 }
 
@@ -277,8 +260,10 @@ function addEventCasePion(){
                 ajoutEtatJeu(i,tour);
                 chgtour();
                 this.removeEventListener("click",arguments.callee);
+                console.log("entre ds if");
             }
             else{
+                console.log("entre ds else");
                 document.querySelector(".instructions").innerHTML = "Posez votre piece dans un emplacement vide, "+tour.nom;
             }
             
@@ -287,10 +272,9 @@ function addEventCasePion(){
 }
 
 
-
-
-
 function startGame(){
+
+    initPage();
     formulaire.addEventListener("submit", (event) =>{
         event.preventDefault();
     
@@ -320,6 +304,7 @@ function startGame(){
 
 function initgame(){
     containerFormulaire.style.display = "none";
+    divEndGame.style.display = "none";
     initEtatJeu();
     initGrillePion();
     tour = playerStart();
@@ -327,6 +312,15 @@ function initgame(){
     p.innerHTML = "<strong>" + tour.nom + "</strong> commence...";
     container_jeu.prepend(p);
     container_jeu.style.display = "flex";
+    console.log("entre ds init");
+}
+
+function initPage(){
+    containerFormulaire.style.display = "flex";
+    container_jeu.style.display = "none";
+    divEndGame.style.display = "none";
+    inputJ1.value = "";
+    inputJ2.value = "";
 }
 
 // MAIN
